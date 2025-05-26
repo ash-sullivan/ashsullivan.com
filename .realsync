@@ -39,7 +39,7 @@ exclude = *.pyc
 exclude = *.swp
 
 # You may read exclusion list from e.g. a .gitignore file.
-#exclude_file = .gitignore
+exclude_file = .gitignore
 
 # To turn off "synchronization ding" sound, set the following to 1.
 nosound = 0

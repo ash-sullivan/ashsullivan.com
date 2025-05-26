@@ -69,7 +69,7 @@ export default function Screensaver() {
             <div
               className="absolute inset-0"
               style={{
-                backgroundColor: `var(--${imageOverlayColor}-500)`,
+                backgroundColor: imageOverlayColor,
                 opacity: 0.5
               }}
             />
