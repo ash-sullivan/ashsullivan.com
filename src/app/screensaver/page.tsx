@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from "next/image";
 
 const IMAGE_COLORS = ["red", "orange", "yellow", "green", "blue", "purple"];
@@ -26,7 +26,7 @@ export default function Screensaver() {
   const [movementVector, setMovementVector] = useState({ x: 0, dx: 10, y: 0, dy: 10 });
   const [cornerHits, setCornerHits] = useState(0);
 
-  const updateMovement = (prevVector: typeof movementVector) => {
+  const updateMovement = useCallback((prevVector: typeof movementVector) => {
     const boxWidth = document.querySelector("main")?.clientWidth ?? window.innerWidth;
     const boxHeight = document.querySelector("main")?.clientHeight ?? window.innerHeight;
 
@@ -41,7 +41,7 @@ export default function Screensaver() {
       dy: prevVector.dy,
     };
 
-    var collisionDetected = false;
+    let collisionDetected = false;
     
     const hasXCollision = nextPosition.x <= 0 || nextPosition.x >= boxWidth - actualImageWidth;
     const hasYCollision = nextPosition.y <= 0 || nextPosition.y >= boxHeight - actualImageHeight;
@@ -67,7 +67,7 @@ export default function Screensaver() {
     }
 
     return nextPosition;
-  };
+  }, [cornerHits]); 
 
   // Animation, could probably add magnitude math in here if I remembered vectors
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function Screensaver() {
     }, 32);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [updateMovement]);
 
   return (
     <div className="grid grid-rows-[auto_1fr_20px] min-h-screen p-8 pb-4 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
