@@ -11,7 +11,7 @@ export default function Menu() {
             <>
                 <Link className="hover:underline" href="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
                 <Link className="hover:underline" href="/cats" onClick={() => setIsMenuOpen(false)}>Cats</Link>
-                <Link className="hover:underline" href="/hobbies" onClick={() => setIsMenuOpen(false)}>Hobbies</Link>
+                <Link className="hover:underline" href="/screensaver" onClick={() => setIsMenuOpen(false)}>Screensaver</Link>
             </>
         );
     }

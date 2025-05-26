@@ -21,7 +21,7 @@ export default function Home() {
           <br /><br />
           For now, you&apos;re going to see a lot of playing with layouts or little UI features. Probably using my cats as test subjects.
           <br /><br />
-          Incidentally, you can find them over at &quot;Cats!&quot;
+          Incidentally, you can find them over at &quot;Cats&quot;.
           <br /><br />
           Thanks for your time checking this out, and stay tuned.
         </div>

@@ -1,6 +1,7 @@
 import Menu from './components/Menu';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Saira } from "next/font/google";
+import Link from 'next/link';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,8 +33,8 @@ export default function RootLayout({
   return (
     <>
       <div className="sticky top-0 z-50">
-        <header className="flex justify-between items-center bg-linear-to-b from-violet-800 to-indigo-800">
-          <h1 className={`${saira.className} text-5xl p-4 flex-none antialiased`}>Ash Sullivan</h1>
+        <header className="flex justify-between items-center bg-linear-to-b from-(var:--background) to-(var:--background-transition-to)">
+          <h1 className={`${saira.className} text-5xl p-4 flex-none antialiased`}><Link href="/">Ash Sullivan</Link></h1>
           <Menu />
         </header> 
         <hr className="border-black" />
