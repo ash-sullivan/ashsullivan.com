@@ -23,11 +23,22 @@ export default function Cats() {
     setIsCarouselOpen(true);
   }
 
-  function OverlayButton({cat}: {cat: string}) {
+  function OverlayButton({ cat }: { cat: string }) {
     return (
       <button
         onClick={() => openCarousel(cat)}
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-500 text-white px-4 py-2 rounded-lg"
+      >
+        Learn more!
+      </button>
+    )
+  }
+
+  function LearnMoreButton({ cat }: { cat: string }) {
+    return (
+      <button
+        onClick={() => openCarousel("Tomo")}
+        className="bg-indigo-500 text-white px-4 py-2 rounded-lg"
       >
         Learn more!
       </button>
@@ -49,7 +60,12 @@ export default function Cats() {
                 height={400}
                 className="w-full max-w-md rounded-lg shadow-md transition-opacity group-hover:opacity-70"
               />
-              <OverlayButton cat="Tomo" />
+              <div className="hidden md:block">
+                <OverlayButton cat="Tomo" />
+              </div>
+              <div className="md:hidden flex justify-center w-full">
+                <LearnMoreButton cat="Tomo" />
+              </div>
             </div>
             <p className="text-center">
               Sweet precious baby angel. Also, her favorite toys are bugs.
@@ -71,7 +87,12 @@ export default function Cats() {
                 height={400}
                 className="w-full max-w-md rounded-lg shadow-md transition-opacity group-hover:opacity-70"
               />
-               <OverlayButton cat="Khali" />
+              <div className="hidden md:block">
+                <OverlayButton cat="Khali" />
+              </div>
+              <div className="md:hidden flex justify-center w-full">
+                <LearnMoreButton cat="Khali" />
+              </div>
             </div>
             <p className="text-center">
               In terms of intelligence, she&apos;s very pretty. (She eats bugs.)
