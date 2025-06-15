@@ -12,6 +12,8 @@ export default function Menu() {
                 <Link className="hover:underline" href="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
                 <Link className="hover:underline" href="/cats" onClick={() => setIsMenuOpen(false)}>Cats</Link>
                 <Link className="hover:underline" href="/screensaver" onClick={() => setIsMenuOpen(false)}>Screensaver</Link>
+                <Link className="hover:underline" href="/slot-machine" onClick={() => setIsMenuOpen(false)}>Slots</Link>
+                <Link className="hover:underline" href="/infinite-grid-demo" onClick={() => setIsMenuOpen(false)}>Infinite Grid</Link>
             </>
         );
     }

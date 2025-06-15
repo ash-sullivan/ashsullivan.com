@@ -11,17 +11,20 @@ export default function SlotMachine() {
         return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
     }
 
-    // UI for representing the spinning/randomness
+    // UI
     const [isSpinning, setIsSpinning] = useState(false);
     const [isSlotLocked, setIsSlotLocked] = useState([true, true, true]);
 
-    // Values of the slots.
-    const [slotSelections, setSlotSelections] = useState([1, 1, 1]);
+    // Data
+    const [slotSelections, setSlotSelections] = useState([0, 0, 0]);
+    const [hasWon, setHasWon] = useState(false);
+    const [numberOfWins, setNumberOfWins] = useState(0);
 
     // each slot waits between 1 and 3 seconds then locks in whatever position it's in
     const spinSlots = async () => {
         setIsSlotLocked([false, false, false]);
         setIsSpinning(true);
+        setHasWon(false);
 
         for (let i = 0; i < slotSelections.length; i++) {
             // Wait for each slot before moving to the next
@@ -33,21 +36,20 @@ export default function SlotMachine() {
                         return newLocked;
                     });
                     resolve();
-                }, getRandomInt(1000, 3000));
+                }, getRandomInt(1000, 2000));
             });
         }
-
         setIsSpinning(false);
     }
-    
-    // Animation for the numbers rotating
+
+    // "Animation" for the numbers rotating
     useEffect(() => {
         const interval = setInterval(() => {
             slotSelections.map((_, index) => {
                 if (!isSlotLocked[index]) {
                     setSlotSelections(prevSelections => {
                         const newSelection = [...prevSelections];
-                        newSelection[index] = getRandomInt(1, 6);
+                        newSelection[index] = getRandomInt(1, 7);
                         return newSelection;
                     })
                 }
@@ -57,9 +59,19 @@ export default function SlotMachine() {
         return () => clearInterval(interval);
     }, [spinSlots]);
 
+    // Check win condition when all slots are locked
+    useEffect(() => {
+        if (isSlotLocked.every(locked => locked)) {
+            if (slotSelections.every(slot => slot > 0 && slot === slotSelections[0])) {
+                setHasWon(true);
+                setNumberOfWins(prevWins => prevWins + 1);
+            }
+        }
+    }, [isSlotLocked, slotSelections]);
+
     return (
         <main className="min-h-screen">
-            <h1 className="text-center text-3xl pt-8">Gamba</h1>
+            <h1 className="text-center text-3xl pt-8">Slots!</h1>
             <div className="justify-center flex flex-row flex-wrap gap-4 px-80 pt-8 text-4xl">
                 {slotSelections.map((slotSelection, index) => {
                     return (
@@ -77,6 +89,7 @@ export default function SlotMachine() {
                         {isSpinning ? 'Spinning...' : 'Spin me!'}
                     </button>
                 </div>
+                {hasWon && <p className="text-center text-2xl pt-8">You won! You now have {numberOfWins} {numberOfWins === 1 ? 'win' : 'wins'}.</p>}
             </div>
         </main>
     );
