@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export default function SlotMachine() {
 
@@ -43,21 +43,35 @@ export default function SlotMachine() {
     }
 
     // "Animation" for the numbers rotating
-    useEffect(() => {
-        const interval = setInterval(() => {
-            slotSelections.map((_, index) => {
-                if (!isSlotLocked[index]) {
-                    setSlotSelections(prevSelections => {
-                        const newSelection = [...prevSelections];
-                        newSelection[index] = getRandomInt(1, 7);
-                        return newSelection;
-                    })
-                }
-            })
-        }, 32);
+    const slotSelectionsRef = useRef(slotSelections);
+    const isSlotLockedRef = useRef(isSlotLocked);
 
+    // Keep refs in sync with state
+    useEffect(() => {
+        slotSelectionsRef.current = slotSelections;
+    }, [slotSelections]);
+
+    useEffect(() => {
+        isSlotLockedRef.current = isSlotLocked;
+    }, [isSlotLocked]);
+
+    // Animation effect with useCallback
+    const updateSlots = useCallback(() => {
+        slotSelectionsRef.current.forEach((_, index) => {
+            if (!isSlotLockedRef.current[index]) {
+                setSlotSelections(prevSelections => {
+                    const newSelection = [...prevSelections];
+                    newSelection[index] = getRandomInt(1, 7);
+                    return newSelection;
+                });
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(updateSlots, 32);
         return () => clearInterval(interval);
-    }, [spinSlots]);
+    }, [updateSlots]);
 
     // Check win condition when all slots are locked
     useEffect(() => {

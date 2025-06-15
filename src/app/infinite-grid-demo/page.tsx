@@ -10,9 +10,14 @@ export default function InfiniteScrollGrid() {
     const infiniteScrollRef = useRef(null);
 
     const getImages = () => {
-        return Array.from({ length: INITIAL_RENDER_IMAGE_COUNT }, (_) => `/cats/Tomo_3.jpg`);
+        return Array.from({ length: INITIAL_RENDER_IMAGE_COUNT }, () => `/cats/Tomo_3.jpg`);
     };
 
+/*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * Triggers the infinite scroll by setting isLoading to true, performing a setTimeout to simulate a network request, and then setting isLoading to false and adding more images to the list.
+     */
+/*******  23f616f9-5ab2-48f9-ad3d-224dee085aa8  *******/
     const loadImages = () => {
         setIsLoading(true);
         // Insert actual network request and handling blah blah here.
@@ -25,7 +30,10 @@ export default function InfiniteScrollGrid() {
     const [gridImageList, setGridImageList] = useState(getImages());
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleInfiniteScroll = () => {
+    useEffect(() => {
+        const node = infiniteScrollRef.current;
+        if (!node) return;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 const entry = entries[0];
@@ -37,19 +45,12 @@ export default function InfiniteScrollGrid() {
                 threshold: 1.0,
             }
         );
-
-        if (infiniteScrollRef.current) {
-            observer.observe(infiniteScrollRef.current);
-        }
+        observer.observe(node);
 
         return () => {
-            if (infiniteScrollRef.current) {
-                observer.unobserve(infiniteScrollRef.current);
-            }
+            observer.unobserve(node); // Use the local variable, not infiniteScrollRef.current
         };
-    }
-
-    useEffect(handleInfiniteScroll, []);
+    }, []);
 
     return (
         <main>
