@@ -19,7 +19,9 @@ type Vector = {
 
 type PlayAreaProps = {
     onClick: (coordinates: {x: number, y: number}) => void;
+    onFishHooked: () => void;
     isReelCast: boolean;
+    isFishCaught: boolean;
     hookPosition: {x: number, y: number};
 }
 
@@ -119,21 +121,10 @@ export default function PlayArea(props: PlayAreaProps) {
 
       }, []); 
 
-    const checkFishHookCollision = () => {
-        // saves us time and electricity
-        if (!props.isReelCast || isFishHooked) return;
-
-        const fish = document.getElementById("fishElement");
-        const hook = document.getElementById("hookElement");
-
-        if (!fish || !hook) return;
-
-        const fishRect = fish.getBoundingClientRect();
-        const hookRect = hook.getBoundingClientRect();
-
+    const areFishAndHookColliding = (fishRect: DOMRect, hookRect: DOMRect): boolean => {
         // (SLIGHTLY) MORE ACCURATE COLLISION
         // if I am so inclined after mvp, figure out how to check if the "filled in" parts
-        // are intersecting because a hook isn't exactly the best shape for checking rects. 
+        // are intersecting because a fish hook isn't exactly rectangular. 
 
         // Calculate centers of fish and hook
         const fishCenter = {
@@ -154,17 +145,7 @@ export default function PlayArea(props: PlayAreaProps) {
         // Use a threshold for collision (e.g., half the average width)
         const collisionThreshold = (fishRect.width + hookRect.width) / 4;
 
-        const isIntersecting = distance < collisionThreshold;
-
-        if (isIntersecting) {
-            setIsFishHooked(true);
-            setFishVector(prevVector => ({
-                x: prevVector.x,
-                y: prevVector.y,
-                dx: 0,
-                dy: 0,
-            }));
-        }
+        return distance < collisionThreshold;
     };
 
     useEffect(() => {
@@ -176,7 +157,32 @@ export default function PlayArea(props: PlayAreaProps) {
     }, [updateFishMovement]);
 
     useEffect(() => {
-        checkFishHookCollision();
+        const fishElement = document.getElementById('fishElement');
+        const hookElement = document.getElementById('hookElement');
+
+        if (fishElement && hookElement) {
+            // Re-run the collision detection function whenever the fish element changes
+            const observer = new MutationObserver(() => {
+                const fishRect = fishElement.getBoundingClientRect();
+                const hookRect = hookElement.getBoundingClientRect();
+
+                const isIntersecting = areFishAndHookColliding(fishRect, hookRect);
+                if (isIntersecting) {
+                    setIsFishHooked(true);
+                    props.onFishHooked();
+                }
+            });
+
+            observer.observe(fishElement, {
+                attributes: true,
+                childList: true,
+                subtree: true,
+            });
+
+            return () => {
+                observer.disconnect();
+            };
+        }
     }, [fishVector, props.hookPosition, props.isReelCast]);
 
     return (
@@ -187,7 +193,7 @@ export default function PlayArea(props: PlayAreaProps) {
             onClick={(e) => onClick(e)}
         >
             {props.isReelCast && <HookGameplayElement hookPosition={props.hookPosition}/>}
-            <FishGameplayElement fishVector={fishVector} />
+            {!props.isFishCaught && <FishGameplayElement fishVector={fishVector} />}
         </div>
     )
 }

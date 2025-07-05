@@ -5,9 +5,20 @@ import { useState } from 'react';
 
 export default function FishingGame() {
 
-    const [fishCaught, setFishCaught] = useState(0);
+    const [score, setScore] = useState(0);
+    const [isFishCaught, setIsFishCaught] = useState(false);
     const [isReelCast, setIsReelCast] = useState(false);
     const [hookPosition, setHookPosition] = useState({x: 0, y: 0});
+
+    function resetFish() {
+        setIsFishCaught(false);
+        setHookPosition({x: 0, y: 0});
+    }
+
+    function resetGame() {
+        setScore(0);
+        setIsFishCaught(false);
+    }
 
     async function castReel(coordinates: {x: number, y: number}) {
         const playArea = document.getElementById('play-area');
@@ -19,8 +30,7 @@ export default function FishingGame() {
         }
     }
 
-
-    async function reelIn() {
+    function reelIn() {
         const playArea = document.getElementById('play-area');
         setIsReelCast(false);
         if (document.pointerLockElement === playArea) {
@@ -28,24 +38,36 @@ export default function FishingGame() {
         }
     }
 
+    function handleFishCaught() {
+        reelIn();
+        setScore(score + 1);
+        setIsFishCaught(true);
+        setTimeout(() => resetFish(), 2000);
+    }
+
     return (
         <div id="main" className="min-h-screen min-w-screen p-4 gap-4 items-center font-[family-name:var(--font-geist-sans)]">
             <header>
                 <h1 className="text-3xl text-center">Fishing Game</h1>
-                <h2 className="text-center">Fish Caught: {fishCaught}</h2>
             </header>
             <main className="grid justify-center">
+                <p className="text-center">Fish Caught: {score}</p>
+                {isFishCaught ? <p className="text-center">You caught a fish!</p> : <br />}
                 <div className="play-area mx-auto">
                     <PlayArea 
                         onClick={(coordinates: {x: number, y: number}) => isReelCast ? reelIn() : castReel(coordinates)}
+                        onFishHooked={handleFishCaught}
+                        isFishCaught={isFishCaught}
                         isReelCast={isReelCast}
                         hookPosition={hookPosition}
                     />
                 </div>
-                <p className="mx-auto m-2 p-2">
+                <p className="text-center mx-auto m-2 p-2">
                     Cast the reel by clicking on the play area. 
                     <br/>
                     Click again to reel in.
+                    <br/>
+                    I'm aware the game isn't very exciting right now, but stay tuned for more fun!
                 </p>
             </main>
         </div>
