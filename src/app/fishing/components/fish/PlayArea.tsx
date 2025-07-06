@@ -72,8 +72,6 @@ const HookGameplayElement = ({hookPosition}: {hookPosition: {x: number, y: numbe
 }
 
 export default function PlayArea(props: PlayAreaProps) {
-
-    const [isFishHooked, setIsFishHooked] = useState(false);
     const [fishVector, setFishVector] = useState(DEFAULT_VECTOR);
 
     const onClick = (e: ReactMouseEvent<HTMLDivElement>) => {
@@ -166,9 +164,7 @@ export default function PlayArea(props: PlayAreaProps) {
                 const fishRect = fishElement.getBoundingClientRect();
                 const hookRect = hookElement.getBoundingClientRect();
 
-                const isIntersecting = areFishAndHookColliding(fishRect, hookRect);
-                if (isIntersecting) {
-                    setIsFishHooked(true);
+                if (areFishAndHookColliding(fishRect, hookRect)) {
                     props.onFishHooked();
                 }
             });
