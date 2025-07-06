@@ -13,11 +13,6 @@ export default function InfiniteScrollGrid() {
         return Array.from({ length: INITIAL_RENDER_IMAGE_COUNT }, () => `/cats/Tomo_3.jpg`);
     };
 
-/*************  ✨ Windsurf Command ⭐  *************/
-    /**
-     * Triggers the infinite scroll by setting isLoading to true, performing a setTimeout to simulate a network request, and then setting isLoading to false and adding more images to the list.
-     */
-/*******  23f616f9-5ab2-48f9-ad3d-224dee085aa8  *******/
     const loadImages = () => {
         setIsLoading(true);
         // Insert actual network request and handling blah blah here.
@@ -50,7 +45,7 @@ export default function InfiniteScrollGrid() {
         return () => {
             observer.unobserve(node); // Use the local variable, not infiniteScrollRef.current
         };
-    }, []);
+    }, [loadImages]);
 
     return (
         <main>

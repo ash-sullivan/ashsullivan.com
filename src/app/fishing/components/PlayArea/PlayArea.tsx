@@ -179,7 +179,7 @@ function PlayArea(props: PlayAreaProps) {
                 observer.disconnect();
             };
         }
-    }, [fishVector, props.hookPosition, props.isReelCast]);
+    }, [fishVector, props]);
 
     return (
         <div 

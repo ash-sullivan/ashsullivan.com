@@ -15,10 +15,10 @@ export default function FishingGame() {
         setHookPosition({x: 0, y: 0});
     }
 
-    function resetGame() {
+    /*function resetGame() {
         setScore(0);
         setIsFishCaught(false);
-    }
+    }*/
 
     async function castReel(coordinates: {x: number, y: number}) {
         const playArea = document.getElementById('play-area');
@@ -67,7 +67,7 @@ export default function FishingGame() {
                     <br/>
                     Click again to reel in.
                     <br/>
-                    I'm aware the game isn't very exciting right now, but stay tuned for more fun!
+                    The game isn&apos;t very exciting right now, but stay tuned for more fun!
                 </p>
             </main>
         </div>
