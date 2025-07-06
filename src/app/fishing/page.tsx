@@ -57,7 +57,7 @@ export default function FishingGame() {
                     <PlayArea 
                         onClick={(coordinates: {x: number, y: number}) => isReelCast ? reelIn() : castReel(coordinates)}
                         onFishHooked={handleFishCaught}
-                        isFishCaught={isFishCaught}
+                        isFishHooked={isFishCaught}
                         isReelCast={isReelCast}
                         hookPosition={hookPosition}
                     />

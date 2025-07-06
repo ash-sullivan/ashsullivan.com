@@ -21,7 +21,7 @@ type PlayAreaProps = {
     onClick: (coordinates: {x: number, y: number}) => void;
     onFishHooked: () => void;
     isReelCast: boolean;
-    isFishCaught: boolean;
+    isFishHooked: boolean;
     hookPosition: {x: number, y: number};
 }
 
@@ -71,7 +71,7 @@ const HookGameplayElement = ({hookPosition}: {hookPosition: {x: number, y: numbe
     )
 }
 
-export default function PlayArea(props: PlayAreaProps) {
+function PlayArea(props: PlayAreaProps) {
     const [fishVector, setFishVector] = useState(DEFAULT_VECTOR);
 
     const onClick = (e: ReactMouseEvent<HTMLDivElement>) => {
@@ -189,7 +189,9 @@ export default function PlayArea(props: PlayAreaProps) {
             onClick={(e) => onClick(e)}
         >
             {props.isReelCast && <HookGameplayElement hookPosition={props.hookPosition}/>}
-            {!props.isFishCaught && <FishGameplayElement fishVector={fishVector} />}
+            {!props.isFishHooked && <FishGameplayElement fishVector={fishVector} />}
         </div>
     )
 }
+
+export default PlayArea;
