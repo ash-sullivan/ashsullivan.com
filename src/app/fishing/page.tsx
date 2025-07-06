@@ -5,6 +5,25 @@ import { useState } from 'react';
 
 export default function FishingGame() {
 
+
+    // TODOS FOR SELF
+    /*
+        BUGFIXES OR UNDESIRABLE BEHAVIOR
+            - Fix first-render bug where hook flashes
+            - Fix bug where user clicks again between fish caught and fish reset and the hook goes to the wrong place
+            - Replace pointer lock with some CSS shenanigans to prevent the banner from showing in browser
+        FEATURES/ENHANCEMENTS
+            - Add "reeling in" mechanic where the fish struggles and the user has to counteract it
+            - Animations
+            - Reset button
+            - Fish with variable ... variables
+        OTHER
+            - test everything
+            - clean up code
+            - polish
+
+    */
+
     const [score, setScore] = useState(0);
     const [isFishCaught, setIsFishCaught] = useState(false);
     const [isReelCast, setIsReelCast] = useState(false);
@@ -25,7 +44,8 @@ export default function FishingGame() {
         if (playArea) {
             // Lock pointer immediately on cast
             setIsReelCast(true);
-            await playArea.requestPointerLock();
+            document.body.style.cursor = 'none';
+            //await playArea.requestPointerLock();
             setHookPosition({ x: coordinates.x, y: coordinates.y });
         }
     }
@@ -34,7 +54,8 @@ export default function FishingGame() {
         const playArea = document.getElementById('play-area');
         setIsReelCast(false);
         if (document.pointerLockElement === playArea) {
-            document.exitPointerLock();
+            document.body.style.cursor = 'default';
+            //document.exitPointerLock();
         }
     }
 
