@@ -1,6 +1,6 @@
 'use client';
 
-import PlayArea from './components/fish/PlayArea';
+import PlayArea from './components/PlayArea/PlayArea';
 import { useState } from 'react';
 
 export default function FishingGame() {

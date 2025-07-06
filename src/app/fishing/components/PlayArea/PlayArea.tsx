@@ -1,5 +1,5 @@
-import Fish from "./Fish";
-import Hook from "./Hook";
+import Fish from "../Fish/Fish";
+import Hook from "../Hook/Hook";
 import {
     useState, 
     useEffect, 
