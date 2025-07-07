@@ -49,7 +49,6 @@ export default function FishingGame() {
     }
 
     function reelIn() {
-        const playArea = document.getElementById('play-area');
         setIsReelCast(false);
         document.body.style.cursor = 'default';
     }

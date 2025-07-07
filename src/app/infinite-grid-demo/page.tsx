@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 
 export default function InfiniteScrollGrid() {
@@ -13,14 +13,14 @@ export default function InfiniteScrollGrid() {
         return Array.from({ length: INITIAL_RENDER_IMAGE_COUNT }, () => `/cats/Tomo_3.jpg`);
     };
 
-    const loadImages = () => {
+    const loadImages = useCallback(() => {
         setIsLoading(true);
         // Insert actual network request and handling blah blah here.
         setTimeout(() => {
             setIsLoading(false);
             setGridImageList(prevList => prevList.concat(getImages()));
         }, 1000);
-    }
+    }, []);
 
     const [gridImageList, setGridImageList] = useState(getImages());
     const [isLoading, setIsLoading] = useState(false);
