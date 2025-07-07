@@ -10,7 +10,7 @@ export default function FishingGame() {
     // TODOS FOR SELF
     /*
         BUGFIXES OR UNDESIRABLE BEHAVIOR
-            - Fix first-render bug where hook flashes (research further, maybe inadvertently fixed)
+            - Fix bug where clicking where the fish already is will cause the hook to go to the wrong place
             - don't use manual css manipulation, figure out how to do "switch" hook conditionally
         FEATURES/ENHANCEMENTS
             - Add "reeling in" mechanic where the fish struggles and the user has to counteract it
