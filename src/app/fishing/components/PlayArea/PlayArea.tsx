@@ -26,6 +26,7 @@ type PlayAreaProps = {
 }
 
 // Shamelessly stolen from MDN to get a random integer.
+// think about a place to put common functions
 function getRandomInt(min: number, max: number) {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
@@ -36,11 +37,12 @@ const FishGameplayElement = ({fishVector}: {fishVector: Vector}) => {
     return (
         <div
             id="fishElement"
-                style={{
-                    transform: `translate(${fishVector.x}px, ${fishVector.y}px)`,
-                    transformOrigin: "center",
-                    position: "absolute",
-                }}
+            data-testid="fish"
+            style={{
+                transform: `translate(${fishVector.x}px, ${fishVector.y}px)`,
+                transformOrigin: "center",
+                position: "absolute",
+            }}
             >
                 <div
                     style={{
@@ -59,6 +61,7 @@ const HookGameplayElement = ({hookPosition}: {hookPosition: {x: number, y: numbe
     return (
         <div
             id="hookElement"
+            data-testid="hook"
             style={{
                 position: "absolute",
                 left: hookPosition.x,

@@ -26,6 +26,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
 .play-area:hover {
   cursor: url('/fishing/fishing-rod.png') 0 16, auto;
+}
+
+.hook-cast {
+  cursor: none;
 }

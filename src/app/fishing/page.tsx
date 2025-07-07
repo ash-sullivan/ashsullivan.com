@@ -5,18 +5,18 @@ import { useState } from 'react';
 
 export default function FishingGame() {
 
+    const noop = () => {};
 
     // TODOS FOR SELF
     /*
         BUGFIXES OR UNDESIRABLE BEHAVIOR
-            - Fix first-render bug where hook flashes
-            - Fix bug where user clicks again between fish caught and fish reset and the hook goes to the wrong place
-            - Replace pointer lock with some CSS shenanigans to prevent the banner from showing in browser
+            - Fix first-render bug where hook flashes (research further, maybe inadvertently fixed)
+            - don't use manual css manipulation, figure out how to do "switch" hook conditionally
         FEATURES/ENHANCEMENTS
             - Add "reeling in" mechanic where the fish struggles and the user has to counteract it
             - Animations
             - Reset button
-            - Fish with variable ... variables
+            - Fish with variable attributes (speed, size, behavior, etc.)
         OTHER
             - test everything
             - clean up code
@@ -42,10 +42,8 @@ export default function FishingGame() {
     async function castReel(coordinates: {x: number, y: number}) {
         const playArea = document.getElementById('play-area');
         if (playArea) {
-            // Lock pointer immediately on cast
             setIsReelCast(true);
             document.body.style.cursor = 'none';
-            //await playArea.requestPointerLock();
             setHookPosition({ x: coordinates.x, y: coordinates.y });
         }
     }
@@ -53,17 +51,20 @@ export default function FishingGame() {
     function reelIn() {
         const playArea = document.getElementById('play-area');
         setIsReelCast(false);
-        if (document.pointerLockElement === playArea) {
-            document.body.style.cursor = 'default';
-            //document.exitPointerLock();
-        }
+        document.body.style.cursor = 'default';
     }
 
     function handleFishCaught() {
         reelIn();
         setScore(score + 1);
+
         setIsFishCaught(true);
-        setTimeout(() => resetFish(), 2000);
+        setTimeout(
+            () => {
+                resetFish();
+                setIsFishCaught(false);
+            }
+        , 2000);
     }
 
     return (
@@ -76,7 +77,7 @@ export default function FishingGame() {
                 {isFishCaught ? <p className="text-center">You caught a fish!</p> : <br />}
                 <div className="play-area mx-auto">
                     <PlayArea 
-                        onClick={(coordinates: {x: number, y: number}) => isReelCast ? reelIn() : castReel(coordinates)}
+                        onClick={isFishCaught ? noop : (coordinates: {x: number, y: number}) => isReelCast ? reelIn() : castReel(coordinates)}
                         onFishHooked={handleFishCaught}
                         isFishHooked={isFishCaught}
                         isReelCast={isReelCast}
