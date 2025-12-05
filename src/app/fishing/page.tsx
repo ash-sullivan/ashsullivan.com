@@ -2,6 +2,7 @@
 
 import PlayArea from './components/PlayArea/PlayArea';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function FishingGame() {
 
@@ -27,6 +28,7 @@ export default function FishingGame() {
     const [score, setScore] = useState(0);
     const [isFishCaught, setIsFishCaught] = useState(false);
     const [isReelCast, setIsReelCast] = useState(false);
+    const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
     const [hookPosition, setHookPosition] = useState({x: 0, y: 0});
 
     function resetFish() {
@@ -66,12 +68,32 @@ export default function FishingGame() {
         , 2000);
     }
 
+    const RulesContent = ({ onClose }: {onClose: () => void}) => {
+        return (
+            <div className="modal">
+                <p className="text-center mx-auto m-2 p-2">
+                    Cast the reel by clicking on the play area. 
+                    <br/>
+                    Click again to reel in.
+                    <br/>
+                    The game isn&apos;t very exciting right now, but stay tuned for more fun!
+                </p>
+                <center>
+                    <button className="button mt-4" onClick={onClose}>OK!</button>
+                </center>
+            </div>
+        )
+    }
+
     return (
         <div id="main" className="min-h-screen min-w-screen p-4 gap-4 items-center font-[family-name:var(--font-geist-sans)]">
             <header>
                 <h1 className="text-3xl text-center">Fishing Game</h1>
             </header>
             <main className="grid justify-center">
+                {isRulesModalOpen && (
+                 createPortal(<RulesContent onClose={() => setIsRulesModalOpen(false)} />, document.body)
+                )}
                 <p className="text-center">Fish Caught: {score}</p>
                 {isFishCaught ? <p className="text-center">You caught a fish!</p> : <br />}
                 <div className="play-area mx-auto">
@@ -83,13 +105,12 @@ export default function FishingGame() {
                         hookPosition={hookPosition}
                     />
                 </div>
-                <p className="text-center mx-auto m-2 p-2">
-                    Cast the reel by clicking on the play area. 
-                    <br/>
-                    Click again to reel in.
-                    <br/>
-                    The game isn&apos;t very exciting right now, but stay tuned for more fun!
-                </p>
+                <button
+                    className="button"
+                    onClick={() => setIsRulesModalOpen(true)}
+                >
+                    Rules
+                </button>
             </main>
         </div>
     )

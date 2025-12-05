@@ -143,7 +143,6 @@ function PlayArea(props: PlayAreaProps) {
             Math.pow(fishCenter.y - hookCenter.y, 2)
         );
 
-        // Use a threshold for collision (e.g., half the average width)
         const collisionThreshold = (fishRect.width + hookRect.width) / 4;
 
         return distance < collisionThreshold;
