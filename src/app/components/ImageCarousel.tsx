@@ -19,19 +19,23 @@ export function ImageCarousel({ images, onClose }: ImageCarouselProps) {
 
     const CarouselImage = ({ src, isActive }: { src: string; isActive: boolean }) => (
         <div
-            className={`transition-all duration-300 ${
-                isActive
-                    ? 'md:w-96 w-50 md:h-96 h-50'
-                    : 'md:w-48 w-25 md:h-48 h-25 opacity-50'
-            }`}
+            className="flex-shrink-0 flex items-center justify-center"
+            style={{ width: 'var(--slot)' }}
         >
-            <Image
-                src={src}
-                alt="Carousel image"
-                width={400}
-                height={400}
-                className="w-full h-full object-cover rounded-lg"
-            />
+            <div
+                className={`transition duration-300 ease-out motion-reduce:transition-none ${
+                    isActive ? 'scale-100 opacity-100' : 'scale-50 opacity-50'
+                }`}
+            >
+                <Image
+                    src={src}
+                    alt="Carousel image"
+                    width={400}
+                    height={400}
+                    className="rounded-lg object-cover"
+                    style={{ width: 'var(--slot)', height: 'var(--slot)' }}
+                />
+            </div>
         </div>
     );
 
@@ -63,11 +67,25 @@ export function ImageCarousel({ images, onClose }: ImageCarouselProps) {
     return (
         <div className="fixed inset-0 bg-indigo-900 bg-opacity-75 flex items-center justify-center z-50">
             <div className="relative w-full max-w-6xl px-12">
-                <div className="relative flex md:flex-row flex-col items-center justify-center gap-4">
-                    <div className="flex md:flex-row flex-col items-center gap-4">
-                        {images.map((src, index) => (
-                            <CarouselImage key={src} src={src} isActive={index === currentIndex} />
-                        ))}
+                <div className="relative flex items-center justify-center [--slot:8rem] md:[--slot:14rem]">
+                    <div
+                        className="relative overflow-visible"
+                        style={{ width: 'var(--slot)' }}
+                    >
+                        <div
+                            className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
+                            style={{
+                                transform: `translateX(calc(-1 * ${currentIndex} * var(--slot)))`,
+                            }}
+                        >
+                            {images.map((src, index) => (
+                                <CarouselImage
+                                    key={src}
+                                    src={src}
+                                    isActive={index === currentIndex}
+                                />
+                            ))}
+                        </div>
                     </div>
                     <CarouselControls />
                 </div>

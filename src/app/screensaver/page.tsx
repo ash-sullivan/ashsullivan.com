@@ -74,9 +74,6 @@ export default function Screensaver() {
         movementVectorRef.current
       );
 
-      // Side effects run exactly once per tick (this callback is not double-invoked
-      // by StrictMode the way a setState updater function would be), so the color
-      // is picked a single time and can never roll back to the current one.
       if (hasXCollision || hasYCollision) {
         const nextColor = pickNewColor(imageOverlayColorRef.current);
         imageOverlayColorRef.current = nextColor;
