@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from "next/image";
 
 const IMAGE_COLORS = ["red", "orange", "yellow", "green", "blue", "purple"];
@@ -14,19 +14,24 @@ function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
 }
 
-// Picks a new color, which shouldn't be the selected one, but for some reason is sometimes undefined. Figure that out.
-function pickNewColor(selectedColor: string | undefined) {
-    const availableColors = IMAGE_COLORS.filter(color => color !== selectedColor);
-    return availableColors[getRandomInt(0, availableColors.length)];
+function pickNewColor(currentColor: string): string {
+  const otherColors = IMAGE_COLORS.filter((color) => color !== currentColor);
+  if (otherColors.length === 0) {
+    return IMAGE_COLORS[0];
+  }
+  return otherColors[getRandomInt(0, otherColors.length)];
 }
 
 export default function Screensaver() {
 
   const [imageOverlayColor, setImageOverlayColor] = useState("blue");
+  const imageOverlayColorRef = useRef("blue");
   const [movementVector, setMovementVector] = useState({ x: 0, dx: 10, y: 0, dy: 10 });
+  const movementVectorRef = useRef(movementVector);
   const [cornerHits, setCornerHits] = useState(0);
 
-  const updateMovement = useCallback((prevVector: typeof movementVector) => {
+  // Pure: given the previous vector, compute the next vector and which edges were hit.
+  const computeNextMovement = useCallback((prevVector: typeof movementVector) => {
     const boxWidth = document.querySelector("main")?.clientWidth ?? window.innerWidth;
     const boxHeight = document.querySelector("main")?.clientHeight ?? window.innerHeight;
 
@@ -41,42 +46,53 @@ export default function Screensaver() {
       dy: prevVector.dy,
     };
 
-    let collisionDetected = false;
-    
-    const hasXCollision = nextPosition.x <= 0 || nextPosition.x >= boxWidth - actualImageWidth;
-    const hasYCollision = nextPosition.y <= 0 || nextPosition.y >= boxHeight - actualImageHeight;
+    const maxX = boxWidth - actualImageWidth;
+    const maxY = boxHeight - actualImageHeight;
+
+    const hasXCollision = nextPosition.x <= 0 || nextPosition.x >= maxX;
+    const hasYCollision = nextPosition.y <= 0 || nextPosition.y >= maxY;
 
     // Check horizontal boundaries
     if (hasXCollision) {
-      nextPosition.dx = nextPosition.x > 0 ? getRandomInt(-10, 0) : getRandomInt(0, 10); // Reverse horizontal direction
-      collisionDetected = true;
+      nextPosition.dx = nextPosition.x > 0 ? getRandomInt(-10, 0) : getRandomInt(1, 11);
+      nextPosition.x = Math.max(0, Math.min(nextPosition.x, maxX));
     }
 
     // Check vertical boundaries
     if (hasYCollision) {
-      nextPosition.dy = nextPosition.y > 0 ? getRandomInt(-10, 0) : getRandomInt(0, 10); // Reverse vertical direction
-      collisionDetected = true;
+      nextPosition.dy = nextPosition.y > 0 ? getRandomInt(-10, 0) : getRandomInt(1, 11);
+      nextPosition.y = Math.max(0, Math.min(nextPosition.y, maxY));
     }
 
-    if (collisionDetected) {
-      setImageOverlayColor((imageOverlayColor) => pickNewColor(imageOverlayColor));
-    };
-
-    if (hasXCollision && hasYCollision) {
-      setCornerHits(cornerHits + 1);
-    }
-
-    return nextPosition;
-  }, [cornerHits]); 
+    return { nextPosition, hasXCollision, hasYCollision };
+  }, []);
 
   // Animation, could probably add magnitude math in here if I remembered vectors
   useEffect(() => {
     const interval = setInterval(() => {
-      setMovementVector(updateMovement);
+      const { nextPosition, hasXCollision, hasYCollision } = computeNextMovement(
+        movementVectorRef.current
+      );
+
+      // Side effects run exactly once per tick (this callback is not double-invoked
+      // by StrictMode the way a setState updater function would be), so the color
+      // is picked a single time and can never roll back to the current one.
+      if (hasXCollision || hasYCollision) {
+        const nextColor = pickNewColor(imageOverlayColorRef.current);
+        imageOverlayColorRef.current = nextColor;
+        setImageOverlayColor(nextColor);
+      }
+
+      if (hasXCollision && hasYCollision) {
+        setCornerHits((hits) => hits + 1);
+      }
+
+      movementVectorRef.current = nextPosition;
+      setMovementVector(nextPosition);
     }, 32);
 
     return () => clearInterval(interval);
-  }, [updateMovement]);
+  }, [computeNextMovement]);
 
   return (
     <div className="grid grid-rows-[auto_1fr_20px] min-h-screen p-8 pb-4 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
