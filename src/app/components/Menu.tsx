@@ -3,54 +3,31 @@
 import { useState } from "react";
 import Link from "next/link";
 
+const MENU_LINKS = [
+  { href: "/", title: "Home" },
+  { href: "/cats", title: "Cats" },
+  { href: "/screensaver", title: "Screensaver" },
+  { href: "/slot-machine", title: "Slots" },
+  { href: "/infinite-grid-demo", title: "Infinite Grid" },
+  { href: "/fishing", title: "Fishing" },
+] as const;
+
 export default function Menu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function MenuLinks() {
     return (
       <>
-        <Link
-          className="hover:underline"
-          href="/"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Home
-        </Link>
-        <Link
-          className="hover:underline"
-          href="/cats"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Cats
-        </Link>
-        <Link
-          className="hover:underline"
-          href="/screensaver"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Screensaver
-        </Link>
-        <Link
-          className="hover:underline"
-          href="/slot-machine"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Slots
-        </Link>
-        <Link
-          className="hover:underline"
-          href="/infinite-grid-demo"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Infinite Grid
-        </Link>
-        <Link
-          className="hover:underline"
-          href="/fishing"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Fishing
-        </Link>
+        {MENU_LINKS.map(({ href, title }) => (
+          <Link
+            key={href}
+            className="hover:underline"
+            href={href}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            {title}
+          </Link>
+        ))}
       </>
     );
   }
