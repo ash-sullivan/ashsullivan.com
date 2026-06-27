@@ -1,2 +1,2 @@
-export { ImageCarousel } from './ImageCarousel';
-export type { ImageCarouselProps } from './ImageCarousel';
+export { ImageCarousel } from "./ImageCarousel";
+export type { ImageCarouselProps } from "./ImageCarousel";

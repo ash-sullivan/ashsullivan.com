@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { ImageCarousel } from '../components/ImageCarousel';
-import { useState } from 'react';
+import Image from "next/image";
+import { ImageCarousel } from "../components/ImageCarousel";
+import { useState } from "react";
 
 export default function Cats() {
   const [isCarouselOpen, setIsCarouselOpen] = useState(false);
@@ -10,7 +10,10 @@ export default function Cats() {
 
   // A choice I made to have each carousel be 5 images, with {catname}_[1-5].jpg
   const getCarouselImages = () => {
-    return Array.from({ length: 5 }, (_, i) => `/cats/${carouselCat}_${i + 1}.jpg`);
+    return Array.from(
+      { length: 5 },
+      (_, i) => `/cats/${carouselCat}_${i + 1}.jpg`
+    );
   };
 
   const openCarousel = (cat: string) => {
@@ -83,7 +86,7 @@ export default function Cats() {
             name="Khali"
             imageSrc="/cats/Khali.jpg"
             altText="Khaleesi, a ragdoll cat who has never had a thought go through her head. Ever. But we love her for that."
-            description="In terms of intelligence, she&apos;s very pretty. (She eats bugs.)"
+            description="In terms of intelligence, she's very pretty. (She eats bugs.)"
           />
         </div>
         {isCarouselOpen && (

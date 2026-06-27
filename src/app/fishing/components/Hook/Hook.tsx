@@ -1,5 +1,4 @@
-import Image from 'next/image';
-
+import Image from "next/image";
 
 /* 
   https://www.flaticon.com/free-icons/fish-hook
@@ -7,12 +6,12 @@ import Image from 'next/image';
 */
 
 export default function Fish() {
-    return (
-        <Image
-            src="/fishing/fish-hook.png"
-            alt="Fish hook"
-            width={32}
-            height={32} 
-        />
-    );
+  return (
+    <Image
+      src="/fishing/fish-hook.png"
+      alt="Fish hook"
+      width={32}
+      height={32}
+    />
+  );
 }

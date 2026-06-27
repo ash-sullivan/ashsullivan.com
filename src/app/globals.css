@@ -22,13 +22,19 @@
 }
 
 body {
-  background: linear-gradient(to bottom, var(--background), var(--background-transition-to));
+  background: linear-gradient(
+    to bottom,
+    var(--background),
+    var(--background-transition-to)
+  );
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .play-area:hover {
-  cursor: url('/fishing/fishing-rod.png') 0 16, auto;
+  cursor:
+    url("/fishing/fishing-rod.png") 0 16,
+    auto;
 }
 
 .hook-cast {
@@ -40,11 +46,15 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background: linear-gradient(to bottom, var(--background), var(--background-transition-to));
+  background: linear-gradient(
+    to bottom,
+    var(--background),
+    var(--background-transition-to)
+  );
   box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
   border: 2px solid black;
   border-radius: 12px;
-  position:  absolute;
+  position: absolute;
   width: 50vw;
   left: 50%;
   top: 50%;
@@ -55,12 +65,14 @@ body {
   background-color: #3b82f6;
   color: #fff;
   font-weight: 600;
-  padding-top: 0.5rem; 
+  padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
   border-radius: 0.25rem;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
   transition-property: background-color;
   transition-duration: 200ms;
 }
