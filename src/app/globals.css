@@ -21,12 +21,18 @@
   }
 }
 
-body {
+html {
+  min-height: 100%;
+  /* Disable the rubber-band overscroll so its (white) region is never revealed. */
+  overscroll-behavior: none;
   background: linear-gradient(
     to bottom,
     var(--background),
     var(--background-transition-to)
   );
+}
+
+body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }

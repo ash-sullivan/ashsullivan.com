@@ -30,28 +30,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <div className="sticky top-0 z-50">
-        <header className="flex justify-between items-center bg-linear-to-b from-(var:--background) to-(var:--background-transition-to)">
-          <h1
-            className={`${saira.className} text-5xl p-4 flex-none antialiased`}
-          >
-            <Link href="/">Ash Sullivan</Link>
-          </h1>
-          <Menu />
-        </header>
-        <hr className="border-black" />
-      </div>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-        </body>
-      </html>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <center>&copy; 2025 Ash Sullivan</center>
-      </footer>
-    </>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <div className="sticky top-0 z-50">
+          <header className="flex justify-between items-center bg-linear-to-b from-(var:--background) to-(var:--background-transition-to)">
+            <h1
+              className={`${saira.className} text-5xl p-4 flex-none antialiased`}
+            >
+              <Link href="/">Ash Sullivan</Link>
+            </h1>
+            <Menu />
+          </header>
+          <hr className="border-black" />
+        </div>
+        {children}
+        <footer className="flex gap-[24px] flex-wrap items-center justify-center">
+          <center>&copy; 2025-2026 Ash Sullivan</center>
+        </footer>
+      </body>
+    </html>
   );
 }
