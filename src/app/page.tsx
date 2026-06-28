@@ -32,8 +32,8 @@ export default function Home() {
             furnish cat pictures on request.
           </p>
           <p>
-            If you're interested in my Github profile and looking at a bunch of
-            contributions in private repositories, that's at{" "}
+            If you&apos;re interested in my Github profile and looking at a bunch of
+            contributions in private repositories, that&apos;s at{" "}
             <Link
               href="https://github.com/ash-sullivan"
               target="_blank"
